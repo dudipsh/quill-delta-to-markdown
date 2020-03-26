@@ -22,7 +22,7 @@ function convert(ops, converters) {
   for (var i = 0; i < ops.length; i++) {
     var op = ops[i];
 
-    if (isObject(op.insert)) {
+    if (isObject(op.insert) && !op.insert.emoji) {
       for (var k in op.insert) {
         if (converters.embed[k]) {
           applyInlineAttributes(op.attributes);
