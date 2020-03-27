@@ -27,6 +27,9 @@ module.exports = {
   },
 
   block: {
+    'emoji': function (data) {
+      console.log('imoji', data)
+    },
     'header': function({header}) {
       this.open = '#'.repeat(header) + ' ' + this.open;
     },

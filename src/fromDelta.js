@@ -11,7 +11,7 @@ exports = module.exports = function(ops, converters = defaultConverters) {
 function convert(ops, converters) {
   var group, line, el, activeInline, beginningOfLine;
   var root = new Node();
-
+  console.log(ops)
   function newLine() {
     el = line = new Node(['', '\n']);
     root.append(line);
@@ -22,14 +22,23 @@ function convert(ops, converters) {
   for (var i = 0; i < ops.length; i++) {
     var op = ops[i];
 
-    if (isObject(op.insert) && !op.insert.emoji) {
+    if (isObject(op.insert) && !op.insert.emoji && !op.insert.mention) {
       for (var k in op.insert) {
         if (converters.embed[k]) {
           applyInlineAttributes(op.attributes);
           converters.embed[k].call(el, op.insert[k], op.attributes);
         }
+        // else {
+        //   console.log('op.insert[k]', op.insert[k])
+        // }
       }
     } else {
+      if (op.insert.mention) {
+        op.insert = '<@' +op.insert.mention.value +'>'
+      };
+      // if (op.insert.emoji) {
+      //   op.insert = '::' + op.insert.emoji + ":: ";
+      // }
       var lines = op.insert.split('\n');
 
       if (hasBlockLevelAttribute(op.attributes, converters)) {
